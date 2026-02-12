@@ -26,6 +26,16 @@ const Contact = () => {
             </a>
             
             <a
+              href="https://linkedin.com/in/gprsilva"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 bg-gray-900 px-8 py-4 rounded-xl border border-gray-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-green-400 group"
+            >
+              <Linkedin className="w-6 h-6 text-green-400 group-hover:text-green-300" />
+              <span className="text-white font-semibold group-hover:text-green-300">LinkedIn</span>
+            </a>
+            
+            <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=gprsilva2008@gmail.com&su=Contato%20Pelo%20Site&body=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20o%20seu%20projeto"
               target="_blank"
               rel="noopener noreferrer"

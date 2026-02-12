@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Settings } from 'lucide-react';
 import { useActiveSection } from '../hooks/useScrollAnimation';
 
-const Navbar = () => {
+const Navbar = ({ onAdminClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const activeSection = useActiveSection();
 
@@ -35,7 +35,7 @@ const Navbar = () => {
             <span class="text-xl font-bold font-mono">gprsilva</span>
           </div>
           
-          <ul className="hidden md:flex space-x-8">
+          <ul className="hidden md:flex space-x-8 items-center">
             {[
               { id: 'about', label: 'Sobre' },
               { id: 'skills', label: 'Habilidades' },
@@ -59,14 +59,33 @@ const Navbar = () => {
                 </button>
               </li>
             ))}
+            <li>
+              <button
+                onClick={onAdminClick}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-green-400 rounded-lg transition-all duration-300 border border-gray-700 hover:border-green-400"
+                title="Painel Administrativo"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="text-sm">Admin</span>
+              </button>
+            </li>
           </ul>
 
-          <button
-            onClick={toggleMenu}
-            className="md:hidden text-gray-300 hover:text-green-400 transition-colors duration-300"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={onAdminClick}
+              className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-green-400 rounded-lg transition-all duration-300 border border-gray-700 hover:border-green-400"
+              title="Painel Administrativo"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
+            <button
+              onClick={toggleMenu}
+              className="text-gray-300 hover:text-green-400 transition-colors duration-300"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

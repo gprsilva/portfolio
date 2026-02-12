@@ -1,79 +1,29 @@
 import { useState } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import ProjectModal from './ProjectModal';
 
-const Projects = () => {
+const Projects = ({ projects = [] }) => {
   const [activeFilter, setActiveFilter] = useState('Todos');
-  
-  const projects = [
-    {
-      title: "superbook",
-      description: "Um superbook para super Pessoas.",
-      tech: ["Python", "Django"],
-      category: "Backend",
-      github: "https://github.com/gprsilva/superbook",
-      updated: "Set 2025"
-    },
-    {
-      title: "Nexus",
-      description: "Um site de noticias sobre o mundo da tecnologia.",
-      tech: ["HTML", "CSS", "JavaScript"],
-      category: "Frontend",
-      github: "https://github.com/gprsilva/Nexus",
-      updated: "Ago 2025"
-    },
-    {
-      title: "django-pro",
-      description: "Projeto para mostrar os passos de um deploy com django.",
-      tech: ["Python", "Django", "Deploy"],
-      category: "Backend",
-      github: "https://github.com/gprsilva/django-pro",
-      updated: "Ago 2025"
-    },
-    {
-      title: "SistemaDeTurmas",
-      description: "Um sistema de turmas para professores.",
-      tech: ["JavaScript", "HTML", "CSS"],
-      category: "Frontend",
-      github: "https://github.com/gprsilva/SistemaDeTurmas",
-      updated: "Ago 2025"
-    },
-    {
-      title: "Consumo_API",
-      description: "Exercicio: Consumo de API com venv, .env e GitHub.",
-      tech: ["Python", "API"],
-      category: "Backend",
-      github: "https://github.com/gprsilva/Consumo_API",
-      updated: "Ago 2025"
-    },
-    {
-      title: "AstroScope",
-      description: "Projeto desenvolvido em Python.",
-      tech: ["Python"],
-      category: "Data",
-      github: "https://github.com/gprsilva/AstroScope",
-      updated: "Mai 2025"
-    },
-    {
-      title: "Urna Eletrônica",
-      description: "Simulação de urna eletrônica com Jupyter Notebook.",
-      tech: ["Python", "Jupyter"],
-      category: "Data",
-      github: "https://github.com/gprsilva/urna-eletronica",
-      updated: "Mai 2025"
-    }
-  ];
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filters = [
     { name: 'Todos', color: 'bg-green-600 hover:bg-green-700', count: projects.length },
     { name: 'Frontend', color: 'bg-pink-600 hover:bg-pink-700', count: projects.filter(p => p.category === 'Frontend').length },
     { name: 'Backend', color: 'bg-blue-600 hover:bg-blue-700', count: projects.filter(p => p.category === 'Backend').length },
-    { name: 'Data', color: 'bg-purple-600 hover:bg-purple-700', count: projects.filter(p => p.category === 'Data').length }
+    { name: 'Data', color: 'bg-purple-600 hover:bg-purple-700', count: projects.filter(p => p.category === 'Data').length },
+    { name: 'Full-Stack', color: 'bg-orange-600 hover:bg-orange-700', count: projects.filter(p => p.category === 'Full-Stack').length },
+    { name: 'Game Development', color: 'bg-red-600 hover:bg-red-700', count: projects.filter(p => p.category === 'Game Development').length }
   ];
 
   const filteredProjects = activeFilter === 'Todos' 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
+
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
 
   return (
     <section id="projects" className="py-20 bg-gray-900">
@@ -111,29 +61,31 @@ const Projects = () => {
           {filteredProjects.map((project, index) => (
             <div
               key={index}
-              className="bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-700 hover:border-green-400"
+              className="bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-700 hover:border-green-400 cursor-pointer group"
+              onClick={() => handleProjectClick(project)}
             >
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-xl font-semibold text-white">
+                  <h3 className="text-xl font-semibold text-white group-hover:text-green-400 transition-colors">
                     {project.title}
                   </h3>
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-gray-400 hover:text-white transition-colors duration-300"
                   >
                     <ExternalLink className="w-5 h-5" />
                   </a>
                 </div>
                 
-                <p className="text-gray-400 leading-relaxed mb-4">
+                <p className="text-gray-400 leading-relaxed mb-4 line-clamp-2">
                   {project.description}
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech, techIndex) => (
+                  {project.tech && project.tech.slice(0, 3).map((tech, techIndex) => (
                     <span
                       key={techIndex}
                       className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm font-medium"
@@ -141,6 +93,11 @@ const Projects = () => {
                       {tech}
                     </span>
                   ))}
+                  {project.tech && project.tech.length > 3 && (
+                    <span className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-sm font-medium">
+                      +{project.tech.length - 3}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="flex items-center justify-between">
@@ -151,6 +108,7 @@ const Projects = () => {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white rounded-lg text-sm font-medium transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <Github className="w-4 h-4" />
@@ -162,6 +120,13 @@ const Projects = () => {
           ))}
         </div>
       </div>
+
+      {/* Project Modal */}
+      <ProjectModal 
+        project={selectedProject} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </section>
   );
 };
