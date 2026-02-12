@@ -4,8 +4,6 @@
 
 O painel administrativo está protegido por senha e pode ser acessado através do botão **"Admin"** na barra de navegação (canto superior direito).
 
-### Credenciais de Acesso
-- **Senha**: `admin123`
 
 ## 📋 Funcionalidades do Painel
 
